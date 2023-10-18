@@ -1,10 +1,12 @@
 #include "shell.h"
 
 /**
- * _myownHistory - displays the history list, one command by line, preceded
- *              with line numbers, starting at 0.
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
+ * _myownHistory - displays the history list, showing each command
+ * with line numbers starting at 0.
+ * 
+ * @info: A structure that may contain relevant arguments. is used to maintain
+ * a consistent function prototype.
+ * 
  *  Return: Always 0
  */
 int _myownHistory(info_t *info)
@@ -25,21 +27,21 @@ int Unset_alias(info_t *info, char *str)
 	char *p, c;
 	int ret;
 
-	p = _strchr(str, '=');
+	p = _strchar(str, '=');
 	if (!p)
 		return (1);
 	c = *p;
 	*p = 0;
-	ret = Delete_node_at_index(&(info->alias),
+	ret = Deleting_node_index(&(info->alias),
 		get_Node_index(info->alias, node_Starts_with(info->alias, str, -1)));
 	*p = c;
 	return (ret);
 }
 
 /**
- * Set_alias - sets alias to string
- * @info: parameter struct
- * @str: the string alias
+ * Set_alias - sets an alias to a specified string.
+ * @info: A parameter struct
+ * @str: The string to be used as an alias.
  *
  * Return: Always 0 on success, 1 on error
  */
@@ -47,19 +49,19 @@ int Set_alias(info_t *info, char *str)
 {
 	char *p;
 
-	p = _strchr(str, '=');
+	p = _strchar(str, '=');
 	if (!p)
 		return (1);
 	if (!*++p)
 		return (Unset_alias(info, str));
 
 	Unset_alias(info, str);
-	return (Add_node_end(&(info->alias), str, 0) == NULL);
+	return (Adding_node_end(&(info->alias), str, 0) == NULL);
 }
 
 /**
  * Print_alias - prints an alias string
- * @node: the alias node
+ * @node: The alias node to be printed.
  *
  * Return: Always 0 on success, 1 on error
  */
@@ -69,7 +71,7 @@ int Print_alias(list_t *node)
 
 	if (node)
 	{
-		p = _strchr(node->str, '=');
+		p = _strchar(node->str, '=');
 		for (a = node->str; a <= p; a++)
 		_putchar(*a);
 		_putchar('\'');
@@ -81,12 +83,12 @@ int Print_alias(list_t *node)
 }
 
 /**
- * _myAlias - mimics the alias builtin (man alias)
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
+ * _myownAlias - emulates the behavior of the alias command (man alias).
+ * @info: A structure that may contain relevant arguments.  is used to maintain
+ *        a consistent function prototype.
  *  Return: Always 0
  */
-int _myAlias(info_t *info)
+int _myownAlias(info_t *info)
 {
 	int i = 0;
 	char *p = NULL;
@@ -104,7 +106,7 @@ int _myAlias(info_t *info)
 	}
 	for (i = 1; info->argv[i]; i++)
 	{
-		p = _strchr(info->argv[i], '=');
+		p = _strchar(info->argv[i], '=');
 		if (p)
 			Set_alias(info, info->argv[i]);
 		else
