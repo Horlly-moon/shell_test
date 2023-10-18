@@ -1,10 +1,13 @@
 #include "shell.h"
 
 /**
- * Clear_info - initializes info_t struct
- * @info: struct address
+ * Clearmy_info - Initializes the info_t structure.
+ * @info: The address of the info_t struct to be initialized.
+ *
+ * This function sets initial values and allocates memory as needed for the
+ * info_t structure, preparing it for use.
  */
-void Clear_info(info_t *info)
+void Clearmy_info(info_t *info)
 {
 	info->arg = NULL;
 	info->argv = NULL;
@@ -13,11 +16,14 @@ void Clear_info(info_t *info)
 }
 
 /**
- * Set_info - initializes info_t struct
- * @info: struct address
- * @arv: argument vector
+ * Setmy_info - Initializes the info_t structure with an argument vector.
+ * info: The address of the info_t struct to be initialized.
+ * arv: The argument vector (typically argv) to be associated with the structure.
+ *
+ * This function sets initial values for the info_t structure and associates it with
+ * the provided argument vector, preparing it for use in shell operations.
  */
-void Set_info(info_t *info, char **arv)
+void Setmy_info(info_t *info, char **arv)
 {
 	int i = 0;
 
@@ -38,17 +44,21 @@ void Set_info(info_t *info, char **arv)
 			;
 		info->argc = i;
 
-		replaceAlias(info);
-		replaceVars(info);
+		replacemyAlias(info);
+		replacemyVars(info);
 	}
 }
 
 /**
- * Free_info - frees info_t struct fields
- * @info: struct address
- * @all: true if freeing all fields
+ * Freemy_info - Frees fields within the info_t structure.
+ * info: The address of the info_t struct with fields to be freed.
+ * all: If true, all fields are freed; if false, specific fields are freed.
+ *
+ * This function deallocates memory and frees specific fields within the info_t
+ * structure based on the 'all' parameter. When 'all' is true, all fields are freed.
+ * When 'all' is false, specific fields are freed as needed.
  */
-void Free_info(info_t *info, int all)
+void Freemy_info(info_t *info, int all)
 {
 	f_free(info->argv);
 	info->argv = NULL;
