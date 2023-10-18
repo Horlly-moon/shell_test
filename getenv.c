@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * get_environment - returns the string array copy of our environ
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * getting_environment - returns a copy of the string array from the environ.
+ * @info: A structure for potential arguments.
+ *
+ * Returns: Always 0.
  */
-char **get_environment(info_t *info)
+char **getting_environment(info_t *info)
 {
 	if (!info->environ || info->env_change)
 	{
@@ -18,13 +18,13 @@ char **get_environment(info_t *info)
 }
 
 /**
- * _unsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: 1 on delete, 0 otherwise
- * @var: the string env var property
+ * my_unsetenv - Removes an environment variable.
+ * info: A structure for potential arguments.
+ * var: The string representing the environment variable.
+ *
+ * Returns: 1 on successful removal, 0 otherwise.
  */
-int _unsetenv(info_t *info, char *var)
+int my_unsetenv(info_t *info, char *var)
 {
 	list_t *node = info->env;
 	size_t i = 0;
@@ -38,7 +38,7 @@ int _unsetenv(info_t *info, char *var)
 		p = Starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			info->env_change = Delete_node_at_index(&(info->env), i);
+			info->env_change = Deleting_node_index(&(info->env), i);
 			i = 0;
 			node = info->env;
 			continue;
@@ -50,15 +50,14 @@ int _unsetenv(info_t *info, char *var)
 }
 
 /**
- * _setenv - Initialize a new environment variable,
- *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- * @var: the string env var property
- * @value: the string env var value
- *  Return: Always 0
+ * my_setenv - Initializes a new environment variable or modifies an existing one.
+ * info: A structure for potential arguments.
+ * var: The string representing the environment variable property.
+ * value: The string representing the environment variable value.
+ *
+ * Returns: Always 0.
  */
-int _setenv(info_t *info, char *var, char *value)
+int my_setenv(info_t *info, char *var, char *value)
 {
 	char *buf = NULL;
 	list_t *node;
@@ -70,7 +69,7 @@ int _setenv(info_t *info, char *var, char *value)
 	buf = malloc(_strlen(var) + _strlen(value) + 2);
 	if (!buf)
 		return (1);
-	_strcpy(buf, var);
+	_strcopy(buf, var);
 	_strcat(buf, "=");
 	_strcat(buf, value);
 	node = info->env;
@@ -86,7 +85,7 @@ int _setenv(info_t *info, char *var, char *value)
 		}
 		node = node->next;
 	}
-	Add_node_end(&(info->env), buf, 0);
+	Adding_node_end(&(info->env), buf, 0);
 	free(buf);
 	info->env_change = 1;
 	return (0);
