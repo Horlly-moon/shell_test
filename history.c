@@ -1,8 +1,8 @@
 #include "shell.h"
 
 /**
- * get_History_file - gets the history file
- * @info: parameter struct
+ * get_History - receives history file
+ * info: info parameter struct
  *
  * Return: allocated string containg history file
  */
@@ -11,24 +11,24 @@ char *get_History_file(info_t *info)
 {
 	char *buf, *dir;
 
-	dir = _getenv(info, "HOME=");
+	dir = _getmyenv(info, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	buf = malloc(sizeof(char) * (_strlength(dir) + _strlength(HIST_FILE) + 2));
 	if (!buf)
 		return (NULL);
 	buf[0] = 0;
-	_strcpy(buf, dir);
+	_strcopy(buf, dir);
 	_strcat(buf, "/");
 	_strcat(buf, HIST_FILE);
 	return (buf);
 }
 
 /**
- * write_History - creates a file, or appends to an existing file
- * @info: the parameter struct
+ * write_History - generate a file, or adds to an existing
+ * info: the parameter struct
  *
- * Return: 1 on success, else -1
+ * Return: 1 if ran successfully, else return -1
  */
 int write_History(info_t *info)
 {
@@ -55,7 +55,7 @@ int write_History(info_t *info)
 
 /**
  * read_History - reads history from file
- * @info: the parameter struct
+ * info: the parameter struct
  *
  * Return: histcount on success, 0 otherwise
  */
@@ -103,12 +103,12 @@ int read_History(info_t *info)
 }
 
 /**
- * build_History_list - adds entry to a history linked list
- * @info: Structure containing potential arguments. Used to maintain
- * @buf: buffer
- * @linecount: the history linecount, histcount
+ * build_History_list - Adds an entry to a history linked list.
+ * info: A structure for potential arguments, used for maintenance.
+ * buf: The buffer containing the entry to add to the history list.
+ * linecount: The history line count (histcount).
  *
- * Return: Always 0
+ * Returns: Always 0.
  */
 int build_History_list(info_t *info, char *buf, int linecount)
 {
@@ -124,10 +124,10 @@ int build_History_list(info_t *info, char *buf, int linecount)
 }
 
 /**
- * renumber_History - renumbers the history linked list after changes
- * @info: Structure containing potential arguments. Used to maintain
+ * renumber_History - Renumbers the history linked list after changes.
+ * info: A structure containing potential arguments, used for maintenance.
  *
- * Return: the new histcount
+ * Returns: The new histcount.
  */
 int renumber_History(info_t *info)
 {
