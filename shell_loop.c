@@ -1,38 +1,38 @@
 #include "shell.h"
 
 /**
- * hsh – The main shell loop
+ * hshell – The primary shell execution loop
  * @info: the parameter & return info struct
  * @arv: the argument vector from main()
  *
  * Return: 0 on success, 1 on error, or error code
  */
-int hsh(info_t *info, char **arv)
+int hshell(info_t *info, char **arv)
 {
 	ssize_t r = 0;
 	int builtin_ret = 0;
 
 	while (r != -1 && builtin_ret != -2)
 	{
-		Clear_info(info);
-		if (interactive_mode(info))
+		Clearmy_info(info);
+		if (Interactive_Mode(info))
 			_puts("$ ");
-		_eputchar(BUF_FLUSH);
-		r = get_Input(info);
+		_errputchar(BUF_FLUSH);
+		r = getting_Input(info);
 		if (r != -1)
 		{
-			Set_info(info, arv);
-			builtin_ret = find_a_builtin(info);
+			Setmy_info(info, arv);
+			builtin_ret = finding_builtin(info);
 			if (builtin_ret == -1)
-				find_a_cmd(info);
+				finding_cmd(info);
 		}
-		else if (interactive_mode(info))
+		else if (Interactive_Mode(info))
 			_putchar('\n');
-		Free_info(info, 0);
+		Freemy_info(info, 0);
 	}
 	write_History(info);
-	Free_info(info, 1);
-	if (!interactive_mode(info) && info->status)
+	Freemy_info(info, 1);
+	if (!Interactive_Mode(info) && info->status)
 		exit(info->status);
 	if (builtin_ret == -2)
 	{
@@ -44,26 +44,26 @@ int hsh(info_t *info, char **arv)
 }
 
 /**
- * find_a_builtin - it finds a builtin command
+ * finding_builtin - finds and execute a built-in command within a shell
  * @info: the parameter & return info struct
  *
- * Return: -1 if builtin not found,
- * 0 if builtin executed successfully,
- * 1 if builtin found but not successful,
- * 2 if builtin signals exit()
+ * Return: -1 if built-in command is not found,
+ * 0 if the built-in command is found and executed successfully,
+ * 1 if the built-in is found but not executed successfully,
+ * 2 if the built-in command signals an exit()
  */
-int find_a_builtin(info_t *info)
+int finding_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit", _myExit},
-		{"env", _myEnv},
-		{"help", _myHelp},
-		{"history", _myHistory},
-		{"setenv", _mySetenv},
-		{"unsetenv", _myUnsetenv},
-		{"cd", _myCd},
-		{"alias", _myAlias},
+		{"exit", _myownExit},
+		{"env", _myownEnv},
+		{"help", _myownHelp},
+		{"history", _myownHistory},
+		{"setenv", _myownSetenv},
+		{"unsetenv", _myownUnsetenv},
+		{"cd", _myownCd},
+		{"alias", _myownAlias},
 		{NULL, NULL}
 	};
 
@@ -78,12 +78,14 @@ int find_a_builtin(info_t *info)
 }
 
 /**
- * find_a_cmd - it finds a command in PATH
- * @info: the parameter & return info struct
+ * finding_cmd - it locates a command      within the PATH environment.
+ * @info: the parameter and return info struct
+ * This function searches for the specified command within the directories listed
+ * in the PATH environment variable.
  *
  * Return: void
  */
-void find_a_cmd(info_t *info)
+void finding_cmd(info_t *info)
 {
 	char *path = NULL;
 	int i, k;
@@ -95,22 +97,22 @@ void find_a_cmd(info_t *info)
 		info->linecount_flag = 0;
 	}
 	for (i = 0, k = 0; info->arg[i]; i++)
-		if (!is_Delim(info->arg[i], " \t\n"))
+		if (!is_myDelim(info->arg[i], " \t\n"))
 			k++;
 	if (!k)
 		return;
 
-	path = find_a_path(info, _getenv(info, "PATH="), info->argv[0]);
+	path = finding_path(info, _getmyenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
 		info->path = path;
-		fork_a_cmd(info);
+		forking_cmd(info);
 	}
 	else
 	{
-		if ((interactive_mode(info) || _getenv(info, "PATH=")
+		if ((Interactive_Mode(info) || _getmyenv(info, "PATH=")
 					|| info->argv[0][0] == '/') && is_cmnd(info, info->argv[0]))
-			fork_a_cmd(info);
+			forking_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
 			info->status = 127;
@@ -120,12 +122,13 @@ void find_a_cmd(info_t *info)
 }
 
 /**
- * fork_a_cmd - it forks a an exec thread to run cmd
- * @info: the parameter & return info struct
+ * forking_cmd - Forks a new execution thread to run a command.
+ * @info: the parameter and return info struct
+ * This function creates a new execution thread to run the specified command.
  *
  * Return: void
  */
-void fork_a_cmd(info_t *info)
+void forking_cmd(info_t *info)
 {
 	pid_t child_pid;
 
@@ -138,9 +141,9 @@ void fork_a_cmd(info_t *info)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(info->path, info->argv, get_environment(info)) == -1)
+		if (execve(info->path, info->argv, getting_environment(info)) == -1)
 		{
-			Free_info(info, 1);
+			Freemy_info(info, 1);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
