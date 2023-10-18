@@ -3,8 +3,8 @@
 /**
  * _err_atoi - converts a string to an integer
  * @s: the string to be converted
- * Return: 0 if no numbers in string, converted number otherwise
- * -1 on error
+ * Return: The converted number if successful, 0 if no numbers are found,
+ *          or -1 on error.
  */
 int _err_atoi(char *s)
 {
@@ -30,37 +30,37 @@ int _err_atoi(char *s)
 
 /**
  * Print_error - prints an error message
- * @info: the parameter & return info struct
- * @estr: string containing specified error type
+ * @info: the parameter and return info struct
+ * @estr: The string containing the specified error type.
  * Return: 0 if no numbers in string, converted number otherwise
  * -1 on error
  */
 void Print_error(info_t *info, char *estr)
 {
-	_eputs(info->fname);
-	_eputs(": ");
-	Print_d(info->line_count, STDERR_FILENO);
-	_eputs(": ");
-	_eputs(info->argv[0]);
-	_eputs(": ");
-	_eputs(estr);
+	_errputs(info->fname);
+	_errputs(": ");
+	Print_dec(info->line_count, STDERR_FILENO);
+	_errputs(": ");
+	_errputs(info->argv[0]);
+	_errputs(": ");
+	_errputs(estr);
 }
 
 /**
- * Print_d - function prints a decimal (integer) number (base 10)
- * @input: the input
- * @fd: the filedescriptor to write to
+ * Print_dec - prints a decimal (base 10) number.
+ * @input: The number to be printed.
+ * @fd: the file descriptor to write to
  *
- * Return: number of characters printed
+ * Return: The number of characters printed
  */
-int Print_d(int input, int fd)
+int Print_dec(int input, int fd)
 {
 	int (*__putchar)(char) = _putchar;
 	int i, count = 0;
 	unsigned int _abs_, current;
 
 	if (fd == STDERR_FILENO)
-		__putchar = _eputchar;
+		__putchar = _errputchar;
 	if (input < 0)
 	{
 		_abs_ = -input;
@@ -86,14 +86,14 @@ int Print_d(int input, int fd)
 }
 
 /**
- * Convert_number - converter function, a clone of itoa
- * @num: number
- * @base: base
- * @flags: argument flags
+ * Converting_number - conversion function, similar to itoa.
+ * @num: The number to be converted.
+ * @base: The base for conversion.
+ * @flags: Flags for arguments.
  *
  * Return: string
  */
-char *Convert_number(long int num, int base, int flags)
+char *Converting_number(long int num, int base, int flags)
 {
 	static char *array;
 	static char buffer[50];
@@ -122,12 +122,12 @@ char *Convert_number(long int num, int base, int flags)
 }
 
 /**
- * remove_Comments - function replaces first instance of '#' with '\0'
- * @buf: address of the string to modify
+ * removing_Comments - replaces the first instance of '#' with '\0' in the string.
+ * @buf: The address of the string to modify.
  *
  * Return: Always 0;
  */
-void remove_Comments(char *buf)
+void removing_Comments(char *buf)
 {
 	int i;
 
