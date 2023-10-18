@@ -1,23 +1,23 @@
 #include "shell.h"
 
 /**
- * interactive_mode - it returns true if shell is interactive mode
+ * Interactive_Mode - it returns true if shell is interactive mode.
  * @info: struct address
  *
  * Return: 1 if interactive mode, 0 otherwise
  */
-int interactive_mode(info_t *info)
+int Interactive_Mode(info_t *info)
 {
 	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
 
 /**
- * is_Delim - it checks if character is a delimeter
- * @c: the char to check
+ * is_myDelim - checks if character is a delimeter
+ * @c: the character to check
  * @delim: the delimeter string
  * Return: 1 if true, 0 if false
  */
-int is_Delim(char c, char *delim)
+int is_myDelim(char c, char *delim)
 {
 	while (*delim)
 		if (*delim++ == c)
@@ -26,12 +26,12 @@ int is_Delim(char c, char *delim)
 }
 
 /**
- * _isAlpha - it checks for alphabetic character
- * @c: The character to input
- * Return: 1 if c is alphabetic, 0 otherwise
+ * _ismyAlpha - checks if a character is alphabetic.
+ * @c: The character to be checked 
+ * Return: 1 if 'c' is an alphabetic character, 0 otherwise.
  */
 
-int _isAlpha(int c)
+int _ismyAlpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 		return (1);
@@ -40,9 +40,9 @@ int _isAlpha(int c)
 }
 
 /**
- * _Atoi - it converts a string to an integer
- * @s: the string that is to be converted
- * Return: 0 if no numbers in string, converted number otherwise
+ * _myAtoi - converts a string to an integer.
+ * @s: The string to be converted
+ * Return: 0 if there are no numbers in the string, or the converted number otherwise.
  */
 
 int _Atoi(char *s)
